@@ -182,34 +182,21 @@ public class Election {
                 break;//wins
             }
             // if there's same number of topCandidates and Active Candidates (Tied)
-            if(topCandidates.size() == numActiveCandidates) {
-                for(int i = 0; i < topCandidates.size(); i++){
-                    winner.add(candidates[topCandidates.get(i)].getName());
+            else if(topCandidates.size() == numActiveCandidates) {
+                for (int topCandidate : topCandidates) {
+                    winner.add(candidates[topCandidate].getName());
                 }
                 break; //win
             }
             // if there's 2 losers or more, then delete 1 from election (and print who was deleted)
-            if (lowerCandidates.size() > 1){
-                int losingCandidate = lowerCandidates.get(0);
-                numActiveCandidates--; //delete from active candidates
-                System.out.println("Candidate " + candidates[losingCandidate].getName() + " was deleted! with "
-                        + candidates[losingCandidate].getVotes() + " votes");
-                List<Ballot> loserBallots = candidates[losingCandidate].eliminate();//delete candidate from election
-                for(int i = 0; i < loserBallots.size(); i++){
-                    Ballot losingBallot = loserBallots.get(i);
-                    losingBallot.eliminateCandidate(losingCandidate);// delete candidate from individual ballot
-                    assignBallotToCandidate(losingBallot);// assign ballot to new candidate
-                }
-            }
-            // if only 1 loser, then delete it from election
-            if (lowerCandidates.size() == 1){
-                int losingCandidate = lowerCandidates.get(0);
-                numActiveCandidates--;
-                List<Ballot> loserBallots = candidates[losingCandidate].eliminate();//delete candidate from election
-                for(int i = 0; i < loserBallots.size(); i++){
-                    Ballot losingBallot = loserBallots.get(i);
-                    losingBallot.eliminateCandidate(losingCandidate);// delete candidate from individual ballot
-                    assignBallotToCandidate(losingBallot);// assign ballot to new candidate
+            else{
+                for (int losingCandidate : lowerCandidates) {
+                    List<Ballot> loserBallots = candidates[losingCandidate].eliminate();//delete candidate from election
+                    numActiveCandidates--; //delete from active candidates
+                    for (Ballot losingBallot : loserBallots) {
+                        losingBallot.eliminateCandidate(losingCandidate);// delete candidate from individual ballot
+                        assignBallotToCandidate(losingBallot);// assign ballot to new candidate
+                    }
                 }
             }
         }
