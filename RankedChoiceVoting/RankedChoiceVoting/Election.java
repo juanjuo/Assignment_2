@@ -113,9 +113,9 @@ public class Election {
         int maxVotes = 0;// max num of votes
 
         // Find the candidate with the highest number of votes.
-        for (int i = 0; i < candidates.length; i++) {
-            if (!candidates[i].isEliminated() && candidates[i].getVotes() > maxVotes) {
-                maxVotes = candidates[i].getVotes();
+        for (Candidate candidate : candidates) {
+            if (!candidate.isEliminated() && candidate.getVotes() > maxVotes) {
+                maxVotes = candidate.getVotes();
             }
         }
         // looks for candidates with the same number of votes and puts them in the Array
@@ -137,9 +137,9 @@ public class Election {
         int minVotes = numVoters;// min num of Votes
 
         // Find the candidate with the lowest number of votes.
-        for (int i = 0; i < candidates.length; i++) {
-            if (!candidates[i].isEliminated() && candidates[i].getVotes() < minVotes) {
-                minVotes = candidates[i].getVotes();
+        for (Candidate candidate : candidates) {
+            if (!candidate.isEliminated() && candidate.getVotes() < minVotes) {
+                minVotes = candidate.getVotes();
             }
         }
         // looks for candidates with the same number of votes and puts them in the Array
@@ -160,13 +160,13 @@ public class Election {
     public List<String> selectWinner () {
         List<String> winner = new ArrayList<>();
         int numActiveCandidates = candidates.length; //n of candidates that are still in the election
-        List<Integer> topCandidates;
-        List<Integer> lowerCandidates = getLowerCandidate();
+        List<Integer> topCandidates; //list with all the top candidates
+        List<Integer> lowerCandidates = getLowerCandidate(); //list with all the losing candidates
 
         //if a candidate has 0 votes, instantly loses
-        for (int i = 0; i < lowerCandidates.size(); i++){
-            Candidate loser = candidates[lowerCandidates.get(i)];
-            if(loser.getVotes() == 0){
+        for (int lowerCandidate : lowerCandidates) {
+            Candidate loser = candidates[lowerCandidate];
+            if (loser.getVotes() == 0) {
                 loser.eliminate();
                 numActiveCandidates--;
                 System.out.println("No Votes! candidate " + loser.getName() + " is eliminated");
@@ -181,14 +181,14 @@ public class Election {
                 winner.add(candidates[topCandidates.get(0)].getName());
                 break;//wins
             }
-            // if there's same number of topCandidates and Active Candidates (Tied)
+            // if there's same number of topCandidates and ActiveCandidates (Tied)
             else if(topCandidates.size() == numActiveCandidates) {
                 for (int topCandidate : topCandidates) {
                     winner.add(candidates[topCandidate].getName());
                 }
-                break; //win
+                break; //wins
             }
-            // if there's 2 losers or more, then delete 1 from election (and print who was deleted)
+            // if there's tied losers, delete all of them
             else{
                 for (int losingCandidate : lowerCandidates) {
                     List<Ballot> loserBallots = candidates[losingCandidate].eliminate();//delete candidate from election
