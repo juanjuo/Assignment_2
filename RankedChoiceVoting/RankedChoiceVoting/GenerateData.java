@@ -32,8 +32,8 @@ public class GenerateData {
             file.write(10);// new line
 
             //write candidate names
-            for (int i = 97; i < 97+numCandidates; i++) {//writing letters from "a" to "z" in ASCII Decimal
-                file.write(i);
+            for (int i = 1; i <= numCandidates; i++) {//assigns a number for each candidate
+                file.write(Integer.toString(i));
                 file.write(10); //new line
             }
 
